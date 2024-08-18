@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.5.1/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.5.1/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.5.1/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.5.1/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Suppression du lien CSS commenté pour plus de clarté -->
+    </head>
+    <body class="bg-gray-300 box-border">
+
+        <h1 class="font-mono font-bold text-4xl my-5 text-white text-center">
+            Welcome, in Todo-list 📋
+        </h1>
+        
+        <div class="container bg-gray-100 flex flex-col items-center p-10 rounded-lg shadow-lg mx-auto max-w-4xl">
+            
+                {% block name %}{% endblock %}
+            
+            <div class="w-full">
+                {% block content %}
+                {% endblock %}
+            </div>
+            
+        </div>
+
+    </body>
+</html>

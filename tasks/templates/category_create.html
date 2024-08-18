@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-3xl font-bold text-gray-800 mb-6">Category</h1>
+<form action="" method="post" class="bg-white p-6 rounded-lg shadow-md space-y-4">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Save" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer transition duration-300">
+</form>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Todo-list {% endblock title %}
+
+{% block name %}☑️ Todo-list {% endblock name %}
+{% block content %}
+  <div class="flex flex-col m-10 w-full max-w-4xl mx-auto space-y-4">
+    <a href="{% url 'home'%}" class="text-xl hover:text-green-300 cursor-pointer"><i class="fi fi-br-angle-left"></i></a>
+    
+    {% for category, tasks in categories_with_tasks.items %}
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-700">{{ category.name }}</h2>
+        <div class="mt-2 space-y-2">
+          {% for task in tasks %}
+            <div class="flex items-center space-x-4 p-4 bg-white shadow-md rounded-lg transition-all duration-300 transform hover:scale-105 hover:bg-blue-50">
+                <input id="custom-checkbox-{{ task.id }}" type="checkbox" 
+                       class=" cursor-pointer appearance-none h-6 w-6 border border-gray-300 rounded-md 
+                              checked:bg-blue-500 checked:border-transparent focus:outline-none 
+                              transition duration-300 transform checked:rotate-45" 
+                       {% if task.completed %} checked {% endif %} 
+                       data-task-id="{{ task.id }}">
+                <label for="custom-checkbox-{{ task.id }}" class="text-gray-800 font-medium text-lg
+                            {% if task.completed %} line-through text-gray-500 {% endif %}">
+                    {{ task.title }} 
+                </label>
+                <span class="ml-auto font-mono text-sm text-gray-400">
+                    Created: {{ task.created_at|date:"d M Y" }}
+                </span>
+                <a href="" class="text-xl hover:text-blue-700 cursor-pointer"><i class="fi fi-rr-edit"></i></a>
+                <a href="" class="text-xl hover:text-red-700 cursor-pointer"><i class="fi fi-rr-trash"></i></a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+        const taskId = this.getAttribute('data-task-id');
+        fetch(`/task/update/${taskId}/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ completed: this.checked })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            const label = document.querySelector(`label[for="custom-checkbox-${taskId}"]`);
+            label.classList.toggle('line-through');
+            label.classList.toggle('text-gray-500');
+          }
+        });
+      });
+    });
+  </script>
+{% endblock content %}
